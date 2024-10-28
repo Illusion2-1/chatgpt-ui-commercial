@@ -8,7 +8,9 @@ const availableModels = [
     'gpt-4',
     'gpt-4-32k',
     'gpt-4-1106-preview',
-    'gpt-4o'
+    'gpt-4o',
+    'gpt-4o-mini-2024-07-18',
+    'o1-mini-2024-09-12'
 ]
 const currentModelDefault = ref(MODELS[currentModel.value.name])
 

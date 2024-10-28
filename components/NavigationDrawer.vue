@@ -1,11 +1,17 @@
 <script setup>
 import { useDisplay } from 'vuetify'
 import {useDrawer} from "../composables/states";
+import BalanceManagement from './BalanceManagement.vue'
 
 const route = useRoute()
 const { $i18n, $settings } = useNuxtApp()
 const colorMode = useColorMode()
 const {mdAndUp} = useDisplay()
+const balanceManagementDialog = ref(false)
+
+const openBalanceManagement = () => {
+  balanceManagementDialog.value = true
+}
 const drawerPermanent = computed(() => {
   return mdAndUp.value
 })
@@ -225,6 +231,11 @@ const drawer = useDrawer()
               </template>
               <v-list>
                 <v-list-item
+                  :title="$t('subscriptionManagement')"
+                  @click="openBalanceManagement"
+                  >
+                </v-list-item>
+                <v-list-item
                     :title="$t('resetPassword')"
                     to="/account/resetPassword"
                 >
@@ -330,7 +341,6 @@ const drawer = useDrawer()
           <v-expansion-panel-text>
             <div class="px-1">
               <v-list density="compact">
-      
                 <v-dialog
                     v-model="clearConfirmDialog"
                     persistent
@@ -421,12 +431,6 @@ const drawer = useDrawer()
       
                 <SettingsLanguages/>
       
-                <v-list-item
-                    rounded="xl"
-                    prepend-icon="help_outline"
-                    :title="$t('feedback')"
-                    @click="feedback"
-                ></v-list-item>
 
               </v-list>
             </div>
@@ -435,6 +439,15 @@ const drawer = useDrawer()
       </v-expansion-panels>
     </template>
   </v-navigation-drawer>
+  <v-dialog
+    v-model="balanceManagementDialog"
+    fullscreen
+    :scrim="false"
+    transition="dialog-bottom-transition"
+  >
+    <BalanceManagement @close="balanceManagementDialog = false" />
+  </v-dialog>
+
   <v-snackbar v-model="snackbar" multi-line location="top">
     {{ snackbarText }}
     <template v-slot:actions>

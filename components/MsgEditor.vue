@@ -44,10 +44,18 @@ const send = () => {
   }
   if (msg.length > 0) {
     let item = toolSelector.value.list[toolSelector.value.selected]
-    props.sendMessage({content: msg, tool: item.name, message_type: item.type})
+    try {
+      props.sendMessage({content: msg, tool: item.name, message_type: item.type})
+      message.value = ""
+      toolSelector.value.selected = 0
+    } catch (error) {
+      if (error.message === 'Rate limit exceeded') {
+        showSnackbar($t('rateLimitExceeded'))
+      } else {
+        showSnackbar(error.message)
+      }
+    }
   }
-  message.value = ""
-  toolSelector.value.selected = 0
 }
 
 const textArea = ref()

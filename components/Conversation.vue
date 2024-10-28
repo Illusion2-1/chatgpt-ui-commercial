@@ -1,5 +1,6 @@
 <script setup>
 import {EventStreamContentType, fetchEventSource} from '@microsoft/fetch-event-source'
+import { useI18n } from 'vue-i18n'
 
 const { $i18n, $settings } = useNuxtApp()
 const runtimeConfig = useRuntimeConfig()
@@ -16,6 +17,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const thinkingPlaceholder = ref(false)
 
 const processMessageQueue = () => {
   if (isProcessingQueue || messageQueue.length === 0) {
@@ -53,6 +56,7 @@ const abortFetch = () => {
 }
 const fetchReply = async (message) => {
   ctrl = new AbortController()
+  thinkingPlaceholder.value = true  // 显示思考中占位符
 
   let msg = message
   if (Array.isArray(message)) {
@@ -98,6 +102,9 @@ const fetchReply = async (message) => {
         if (response.ok && response.headers.get('content-type') === EventStreamContentType) {
           return;
         }
+        if (response.status === 429) {
+          throw new Error('Rate limit exceeded');
+        }
         throw new Error(`Failed to send message. HTTP ${response.status} - ${response.statusText}`);
       },
       onclose() {
@@ -115,11 +122,17 @@ const fetchReply = async (message) => {
 
         if (event === 'error') {
           abortFetch()
-          showSnackbar(data.error)
+          thinkingPlaceholder.value = false  // 隐藏思考中占位符
+          if (data.error === 'Rate limit exceeded') {
+            showSnackbar(t('rateLimitExceeded'))
+          } else {
+            showSnackbar(data.error)
+          }
           return;
         }
 
         if (event === 'userMessageId') {
+          thinkingPlaceholder.value = false  // 隐藏思考中占位符
           props.conversation.messages[props.conversation.messages.length - 1].id = data.userMessageId
           return;
         }
@@ -146,7 +159,12 @@ const fetchReply = async (message) => {
   } catch (err) {
     console.log(err)
     abortFetch()
-    showSnackbar(err.message)
+    thinkingPlaceholder.value = false  // 隐藏思考中占位符
+    if (err.message === 'Rate limit exceeded') {
+      showSnackbar(t('rateLimitExceeded'))
+    } else {
+      showSnackbar(err.message)
+    }
   }
 }
 
@@ -202,6 +220,7 @@ onNuxtReady(() => {
   currentModel.value = getCurrentModel()
 })
 
+const { t } = useI18n()
 </script>
 
 <template>
@@ -251,6 +270,24 @@ onNuxtReady(() => {
                     :use-prompt="usePrompt"
                     :delete-message="deleteMessage"
                 />
+              </div>
+            </v-col>
+          </v-row>
+          <!-- 添加思考中占位符 -->
+          <v-row v-if="thinkingPlaceholder">
+            <v-col cols="12">
+              <div class="d-flex align-center justify-start">
+                <v-card class="ma-2 pa-2" max-width="300">
+                  <v-card-text>
+                    <v-progress-circular
+                      indeterminate
+                      color="primary"
+                      size="24"
+                      class="mr-2"
+                    ></v-progress-circular>
+                    {{ $t('thinking') }}...
+                  </v-card-text>
+                </v-card>
               </div>
             </v-col>
           </v-row>

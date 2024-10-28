@@ -58,6 +58,24 @@ export const MODELS = {
     max_tokens: 2000,
     temperature: 0.7,
     top_p: 1.0
+  },
+  'gpt-4o-mini-2024-07-18': {
+    name: 'gpt-4o-mini-2024-07-18',
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0,
+    total_tokens: 4096,
+    max_tokens: 2000,
+    temperature: 0.7,
+    top_p: 1.0
+  },
+  'o1-mini-2024-09-12':{
+    name: 'o1-mini-2024-09-12',
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0,
+    total_tokens: 4096,
+    max_tokens: 2000,
+    temperature: 0.7,
+    top_p: 1.0
   }
 }
 
