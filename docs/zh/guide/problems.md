@@ -2,11 +2,11 @@
 
 ## 搜索问题
 
-当你在使用项目时，如果遇到了问题，可以在项目的 [Issues](https://github.com/WongSaang/chatgpt-ui/issues) 页面搜索相关的关键词，看看其他人是否遇到过相同的问题以及解决方案。
+当你在使用项目时，如果遇到了问题，可以在项目的 [Issues](https://github.com/Illusion2-1/chatgpt-ui-commercial) 页面搜索相关的关键词，看看其他人是否遇到过相同的问题以及解决方案。
 
 ## 提 issue
 
-如果没有找到解决方案，可以通过提交 Issue 来与项目维护者交流。[提交Issue](https://github.com/WongSaang/chatgpt-ui/issues/new)
+如果没有找到解决方案，可以通过提交 Issue 来与项目维护者交流。[提交Issue](https://github.com/Illusion2-1/chatgpt-ui-commercial/new)
 
 **注意**
 

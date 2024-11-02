@@ -7,6 +7,6 @@ export const navbarZh: NavbarConfig = [
   },
   {
     text: '更新日志',
-    link: 'https://github.com/WongSaang/chatgpt-ui/releases',
+    link: 'https://github.com/Illusion2-1/chatgpt-ui-commercial/releases',
   }
 ]

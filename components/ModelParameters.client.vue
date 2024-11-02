@@ -1,27 +1,43 @@
 <script setup>
+import { ref, onMounted, computed } from 'vue'
+import { useCurrentModel } from '../composables/model'
 
 const dialog = ref(false)
-const currentModel = useCurrentModel()
-const availableModels = [
-    'gpt-3.5-turbo',
-    'gpt-3.5-turbo-16k',
-    'gpt-4',
-    'gpt-4-32k',
-    'gpt-4-1106-preview',
-    'gpt-4o',
-    'gpt-4o-mini-2024-07-18',
-    'o1-mini-2024-09-12'
-]
-const currentModelDefault = ref(MODELS[currentModel.value.name])
+const { currentModel, modelList } = useCurrentModel()
 
-onNuxtReady(() => {
-  currentModel.value = getCurrentModel()
-  watch(currentModel, (newVal, oldVal) => {
-    currentModelDefault.value = MODELS[newVal.name]
-    saveCurrentModel(newVal)
-  }, { deep: true })
+// 添加 currentModelDefault
+const currentModelDefault = ref({
+    total_tokens: 4096,
+    temperature: 0.7,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    max_tokens: 2048
 })
 
+// 获取当前选中的模型信息
+const getCurrentModelInfo = computed(() => {
+    return modelList.value.find(model => model.name === currentModel.value?.name)
+})
+
+// 更新 currentModelDefault
+const updateCurrentModelDefault = () => {
+    const modelInfo = getCurrentModelInfo.value
+    if (modelInfo) {
+        currentModelDefault.value = {
+            total_tokens: modelInfo.max_tokens,
+            temperature: modelInfo.temperature,
+            top_p: modelInfo.top_p,
+            frequency_penalty: modelInfo.frequency_penalty,
+            presence_penalty: modelInfo.presence_penalty,
+            max_tokens: modelInfo.max_response_tokens
+        }
+    }
+}
+
+onMounted(() => {
+    updateCurrentModelDefault()
+})
 </script>
 
 <template>
@@ -51,7 +67,9 @@ onNuxtReady(() => {
         <v-select
             v-model="currentModel.name"
             :label="$t('model')"
-            :items="availableModels"
+            :items="modelList"
+            item-title="display_name"
+            item-value="name"
             variant="underlined"
         ></v-select>
 

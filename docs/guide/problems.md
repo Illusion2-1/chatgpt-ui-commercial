@@ -2,11 +2,11 @@
 
 ## Searching for Issues
 
-If you encounter any issues while using the project, you can search for related keywords on the project's [Issues](https://github.com/WongSaang/chatgpt-ui/issues) page to see if others have faced similar issues and if there are any solutions available.
+If you encounter any issues while using the project, you can search for related keywords on the project's [Issues](https://github.com/Illusion2-1/chatgpt-ui-commercial) page to see if others have faced similar issues and if there are any solutions available.
 
 ## Submitting an Issue
 
-If you cannot find a solution, you can communicate with the project maintainers by submitting an issue. [Submit an Issue](https://github.com/WongSaang/chatgpt-ui/issues/new)
+If you cannot find a solution, you can communicate with the project maintainers by submitting an issue. [Submit an Issue](https://github.com/Illusion2-1/chatgpt-ui-commercial/new)
 
 **Note**
 

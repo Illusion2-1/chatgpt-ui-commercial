@@ -4,7 +4,7 @@
 
 所需技能：[Vue](https://vuejs.org/)、[Nuxt](https://nuxt.com/)
 
-项目地址：[https://github.com/WongSaang/chatgpt-ui](https://github.com/WongSaang/chatgpt-ui)
+项目地址：[https://github.com/Illusion2-1/chatgpt-ui-commercial](https://github.com/Illusion2-1/chatgpt-ui-commercial)
 
 ### 环境准备
 安装最新稳定版 node.js，如果需要打包成 docker 镜像，还需要安装 docker。
@@ -38,7 +38,7 @@ docker build -t image-name:latest .
 
 所需技能：[Python](https://www.python.org/)、[Django](https://djangoproject.com/)
 
-项目地址：[https://github.com/WongSaang/chatgpt-ui-server](https://github.com/WongSaang/chatgpt-ui-server)
+项目地址：[https://github.com/Illusion2-1/chatgpt-ui-commercial-server](https://github.com/Illusion2-1/chatgpt-ui-commercial-server)
 
 ### 环境准备
 安装Python、pip/pipenv，如果需要打包成 docker 镜像，还需要安装 docker。

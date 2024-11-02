@@ -10,8 +10,8 @@ ChatGPT UI 是一个非官方的 ChatGPT Web 客户端。它支持多用户，�
 
 本项目项目包括客户端和服务端两部分。
 
-- 客户端，基于 [Nuxt](https://nuxt.com/)，项目地址：[https://github.com/WongSaang/chatgpt-ui](https://github.com/WongSaang/chatgpt-ui)
-- 服务端，基于 [Django](https://djangoproject.com/)，项目地址：[https://github.com/WongSaang/chatgpt-ui-server](https://github.com/WongSaang/chatgpt-ui-server)
+- 客户端，基于 [Nuxt](https://nuxt.com/)，项目地址：[https://github.com/Illusion2-1/chatgpt-ui-commercial](https://github.com/Illusion2-1/chatgpt-ui-commercial)
+- 服务端，基于 [Django](https://djangoproject.com/)，项目地址：[https://github.com/Illusion2-1/chatgpt-ui-commercial-server](https://github.com/Illusion2-1/chatgpt-ui-commercial-server)
 
 ### 客户端
 - 用户系统，支持用户注册、登录、修改密码等。

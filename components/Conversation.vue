@@ -1,14 +1,16 @@
 <script setup>
-import {EventStreamContentType, fetchEventSource} from '@microsoft/fetch-event-source'
+import { EventStreamContentType, fetchEventSource } from '@microsoft/fetch-event-source'
 import { useI18n } from 'vue-i18n'
+import { useCurrentModel } from '../composables/model'
+import { ref } from 'vue'
 
 const { $i18n, $settings } = useNuxtApp()
 const runtimeConfig = useRuntimeConfig()
-const currentModel = useCurrentModel()
+const { currentModel, modelList } = useCurrentModel()
 const openaiApiKey = useApiKey()
 const fetchingResponse = ref(false)
 const messageQueue = []
-const frugalMode = ref(true)
+const frugalMode = ref(false)
 let isProcessingQueue = false
 
 const props = defineProps({
@@ -81,12 +83,15 @@ const fetchReply = async (message) => {
     msg.type = 110
   }
 
-  const data = Object.assign({}, currentModel.value, {
+  // 构建请求数据，确保 model_name 是顶层字段
+  const data = {
+    model_name: currentModel.value.name,  // 添加 model_name
     openaiApiKey: $settings.open_api_key_setting === 'True' ? openaiApiKey.value : null,
     message: message,
     conversationId: props.conversation.id,
-    frugalMode: frugalMode.value
-  }, webSearchParams)
+    frugalMode: frugalMode.value,
+    ...webSearchParams
+  }
 
   try {
     await fetchEventSource('/api/conversation/', {
@@ -157,7 +162,8 @@ const fetchReply = async (message) => {
       },
     })
   } catch (err) {
-    console.log(err)
+    console.error('Conversation request failed:', err);
+    console.error('Request data:', data);
     abortFetch()
     thinkingPlaceholder.value = false  // 隐藏思考中占位符
     if (err.message === 'Rate limit exceeded') {
