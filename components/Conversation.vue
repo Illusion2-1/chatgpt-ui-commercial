@@ -192,11 +192,27 @@ const send = (message) => {
   if (props.conversation.messages.length === 0) {
     addConversation(props.conversation)
   }
+  
   if (Array.isArray(message)) {
-    props.conversation.messages.push(...message.map(i => ({message: i.content, message_type: i.message_type})))
+    const isDocumentMessage = message.some(m => m.message_type === 120)
+    props.conversation.messages.push(...message.map(i => ({
+      message: i.content, 
+      message_type: i.message_type,
+      is_bot: i.is_bot || false
+    })))
+    
+    if (isDocumentMessage) {
+      fetchingResponse.value = false
+      return
+    }
   } else {
-    props.conversation.messages.push({ message: message.content, message_type: message.message_type })
+    props.conversation.messages.push({ 
+      message: message.content, 
+      message_type: message.message_type,
+      is_bot: message.is_bot || false 
+    })
   }
+  
   fetchReply(message)
   scrollChatWindow()
 }
