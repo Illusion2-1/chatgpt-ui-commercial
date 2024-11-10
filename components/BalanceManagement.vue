@@ -1,10 +1,15 @@
 <template>
   <v-card>
-    <v-toolbar dark color="primary">
-      <v-btn icon @click="$emit('close')">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      <v-toolbar-title>{{ $t('subscriptionManagement') }}</v-toolbar-title>
+    <v-toolbar dark color="primary" class="align-center">
+      <v-btn 
+            icon="chevron_left" 
+            variant="outlined" 
+            class="mx-1" 
+            color="white" 
+            size="medium"
+            @click="$emit('close')"
+          ></v-btn>
+      <v-toolbar-title class="ml-4">{{ $t('subscriptionManagement') }}</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
 
