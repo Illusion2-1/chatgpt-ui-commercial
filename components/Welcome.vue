@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Announcements ref="announcementsRef" :auto-show="true" />
     <v-row>
       <v-col cols="12">
         <div class="text-center">

@@ -144,5 +144,7 @@
   "close": "关闭",
   "rateLimitExceeded": "到达每分钟最大速率限制，请一分钟后再试",
   "thinking": "思考中...",
-  "modelNotAllowed": "您请求的模型不在您的订阅计划中。"
+  "modelNotAllowed": "您请求的模型不在您的订阅计划中。",
+  "announcements": "公告",
+  "doNotShowAgain": "不再显示"
 }

@@ -128,5 +128,7 @@
     "confirm": "Confirmar",
     "close": "Cerrar",
     "rateLimitExceeded": "Límite de tasa excedido",
-    "modelNotAllowed": "El modelo que solicitó no está permitido por su suscripción."
+    "modelNotAllowed": "El modelo que solicitó no está permitido por su suscripción.",
+    "announcements": "Anuncios",
+    "doNotShowAgain": "No mostrar de nuevo"
 }

@@ -127,5 +127,7 @@
   "cancel": "Annuler",
   "confirm": "Confirmer",
   "close": "Fermer",
-  "modelNotAllowed": "Le modèle que vous avez demandé n'est pas autorisé par votre abonnement."
+  "modelNotAllowed": "Le modèle que vous avez demandé n'est pas autorisé par votre abonnement.",
+  "announcements": "Annonces",
+  "doNotShowAgain": "Ne pas afficher à nouveau"
 }

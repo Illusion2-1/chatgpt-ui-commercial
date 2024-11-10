@@ -2,6 +2,7 @@
 import { useDisplay } from 'vuetify'
 import {useDrawer} from "../composables/states";
 import BalanceManagement from './BalanceManagement.vue'
+import Announcements from './Announcements.vue'
 
 const route = useRoute()
 const { $i18n, $settings } = useNuxtApp()
@@ -196,6 +197,12 @@ onNuxtReady(async () => {
 
 const drawer = useDrawer()
 
+const announcementsRef = ref(null)
+
+const openAnnouncements = () => {
+  announcementsRef.value?.loadAnnouncements()
+}
+
 </script>
 
 <template>
@@ -234,6 +241,11 @@ const drawer = useDrawer()
                   :title="$t('subscriptionManagement')"
                   @click="openBalanceManagement"
                   >
+                </v-list-item>
+                <v-list-item
+                    :title="$t('announcements')"
+                    @click="openAnnouncements"
+                >
                 </v-list-item>
                 <v-list-item
                     :title="$t('resetPassword')"
@@ -462,6 +474,7 @@ const drawer = useDrawer()
     multiple
     @change="importConversation"
   >
+  <Announcements ref="announcementsRef" :hide-read-button="true" />
 </template>
 
 <style>
