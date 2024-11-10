@@ -110,6 +110,9 @@ const fetchReply = async (message) => {
         if (response.status === 429) {
           throw new Error('Rate limit exceeded');
         }
+        if (response.status === 403) {
+          throw new Error('Model not allowed by subscription');
+        }
         throw new Error(`Failed to send message. HTTP ${response.status} - ${response.statusText}`);
       },
       onclose() {
@@ -168,6 +171,8 @@ const fetchReply = async (message) => {
     thinkingPlaceholder.value = false  // 隐藏思考中占位符
     if (err.message === 'Rate limit exceeded') {
       showSnackbar(t('rateLimitExceeded'))
+    } else if (err.message === 'Model not allowed by subscription') {
+      showSnackbar(t('modelNotAllowed'))
     } else {
       showSnackbar(err.message)
     }

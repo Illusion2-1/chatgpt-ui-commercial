@@ -126,5 +126,6 @@
   "redeemSuccess": "Rachat réussi",
   "cancel": "Annuler",
   "confirm": "Confirmer",
-  "close": "Fermer"
+  "close": "Fermer",
+  "modelNotAllowed": "Le modèle que vous avez demandé n'est pas autorisé par votre abonnement."
 }

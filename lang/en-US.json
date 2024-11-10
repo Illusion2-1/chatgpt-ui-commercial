@@ -135,5 +135,6 @@
   "confirm": "Confirm",
   "close": "Close",
   "rateLimitExceeded": "Rate limit exceeded",
-  "thinking": "Thinking..."
+  "thinking": "Thinking...",
+  "modelNotAllowed": "The model you requested is not allowed by your subscription."
 }

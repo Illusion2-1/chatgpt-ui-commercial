@@ -127,5 +127,6 @@
     "cancel": "Cancelar",
     "confirm": "Confirmar",
     "close": "Cerrar",
-    "rateLimitExceeded": "Límite de tasa excedido"
+    "rateLimitExceeded": "Límite de tasa excedido",
+    "modelNotAllowed": "El modelo que solicitó no está permitido por su suscripción."
 }
