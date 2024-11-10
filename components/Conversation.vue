@@ -2,11 +2,11 @@
 import { EventStreamContentType, fetchEventSource } from '@microsoft/fetch-event-source'
 import { useI18n } from 'vue-i18n'
 import { useCurrentModel } from '../composables/model'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const { $i18n, $settings } = useNuxtApp()
 const runtimeConfig = useRuntimeConfig()
-const { currentModel, modelList } = useCurrentModel()
+const { currentModel, modelList, fetchModels } = useCurrentModel()
 const openaiApiKey = useApiKey()
 const fetchingResponse = ref(false)
 const messageQueue = []
@@ -243,8 +243,8 @@ const toggleMessage = (index) => {
 const enableWebSearch = ref(false)
 
 
-onNuxtReady(() => {
-  currentModel.value = getCurrentModel()
+onMounted(async () => {
+  await fetchModels()
 })
 
 const { t } = useI18n()

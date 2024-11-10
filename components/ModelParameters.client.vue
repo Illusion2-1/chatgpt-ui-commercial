@@ -1,43 +1,14 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, watch } from 'vue'
 import { useCurrentModel } from '../composables/model'
 
 const dialog = ref(false)
 const { currentModel, modelList } = useCurrentModel()
 
-// 添加 currentModelDefault
-const currentModelDefault = ref({
-    total_tokens: 4096,
-    temperature: 0.7,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 2048
-})
+watch(currentModel, (newModel) => {
+    localStorage.setItem('currentModel', JSON.stringify(newModel))
+}, { deep: true })
 
-// 获取当前选中的模型信息
-const getCurrentModelInfo = computed(() => {
-    return modelList.value.find(model => model.name === currentModel.value?.name)
-})
-
-// 更新 currentModelDefault
-const updateCurrentModelDefault = () => {
-    const modelInfo = getCurrentModelInfo.value
-    if (modelInfo) {
-        currentModelDefault.value = {
-            total_tokens: modelInfo.max_tokens,
-            temperature: modelInfo.temperature,
-            top_p: modelInfo.top_p,
-            frequency_penalty: modelInfo.frequency_penalty,
-            presence_penalty: modelInfo.presence_penalty,
-            max_tokens: modelInfo.max_response_tokens
-        }
-    }
-}
-
-onMounted(() => {
-    updateCurrentModelDefault()
-})
 </script>
 
 <template>
@@ -114,20 +85,20 @@ onMounted(() => {
                   single-line
                   density="compact"
                   type="number"
-                  :max="currentModelDefault.total_tokens"
+                  :max="4096"
                   step="1"
                   style="width: 100px"
                   class="flex-grow-0"
               ></v-text-field>
             </div>
             <div class="text-caption">
-              {{ $t('maxTokenTips1') }} <b>{{ currentModelDefault.total_tokens }}</b> {{ $t('maxTokenTips2') }}
+              {{ $t('maxTokenTips1') }} <b>4096</b> {{ $t('maxTokenTips2') }}
             </div>
           </v-col>
           <v-col cols="12">
             <v-slider
                 v-model="currentModel.max_tokens"
-                :max="currentModelDefault.total_tokens"
+                :max="4096"
                 :step="1"
                 hide-details
             >
