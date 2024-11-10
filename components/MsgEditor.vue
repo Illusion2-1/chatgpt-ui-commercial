@@ -59,14 +59,10 @@ const send = () => {
 }
 
 const textArea = ref()
-const documentMan = ref(null)
 
 const usePrompt = (prompt) => {
   message.value = prompt
   textArea.value.focus()
-}
-const refreshDocList = () => {
-  documentMan.value.loadDocs()
 }
 
 const clickSendBtn = () => {
@@ -81,7 +77,7 @@ const enterOnly = (event) => {
 }
 
 defineExpose({
-  usePrompt, refreshDocList
+  usePrompt
 })
 
 const toolSelector = ref({
@@ -138,12 +134,6 @@ const docDialogCtl = ref({
         >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
-        <v-list-item
-          prepend-icon="article"
-          @click="docDialogCtl.dialog = true"
-        >
-          Documents
-        </v-list-item>
       </v-list>
     </v-menu>
     <v-textarea
@@ -170,9 +160,4 @@ const docDialogCtl = ref({
         @click="clickSendBtn"
     ></v-btn>
   </div>
-  <DocumentsManage
-    :send-message="sendMessage" 
-    :control="docDialogCtl"
-    ref="documentMan"
-  />
 </template>
