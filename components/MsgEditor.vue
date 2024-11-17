@@ -1,5 +1,6 @@
 <script setup>
 import { isMobile } from 'is-mobile'
+import CryptoJS from 'crypto-js'
 const { $i18n } = useNuxtApp()
 
 const props = defineProps({
@@ -44,6 +45,12 @@ const showImageUpload = computed(() => {
   return currentModel.value?.image_support
 })
 
+const imageStorage = useState('imageStorage', () => ({}))
+
+const calculateImageHash = (base64String) => {
+  return CryptoJS.MD5(base64String).toString()
+}
+
 const handleImageSelect = async (event) => {
   const file = event.target.files[0]
   if (file) {
@@ -51,6 +58,9 @@ const handleImageSelect = async (event) => {
     const reader = new FileReader()
     reader.onload = (e) => {
       imageBase64.value = e.target.result
+      const imageHash = calculateImageHash(e.target.result)
+      imageStorage.value[imageHash] = e.target.result
+      localStorage.setItem('imageStorage', JSON.stringify(imageStorage.value))
     }
     reader.readAsDataURL(file)
   }
@@ -75,7 +85,9 @@ const send = () => {
       }
       
       if (imageBase64.value) {
+        const imageHash = calculateImageHash(imageBase64.value)
         messageData.image = imageBase64.value
+        messageData.image_hash = imageHash
         messageData.message_type = 120
       }
       
@@ -139,6 +151,13 @@ function selectTool(idx) {
 }
 const docDialogCtl = ref({
   dialog: false,
+})
+
+onMounted(() => {
+  const storedImages = localStorage.getItem('imageStorage')
+  if (storedImages) {
+    imageStorage.value = JSON.parse(storedImages)
+  }
 })
 </script>
 

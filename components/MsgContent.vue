@@ -4,6 +4,8 @@ import MarkdownIt from 'markdown-it'
 import copy from 'copy-to-clipboard'
 import mathjax3 from 'markdown-it-mathjax3'
 
+// 获取图片存储
+const imageStorage = useState('imageStorage', () => ({}))
 
 const md = new MarkdownIt({
   linkify: true,
@@ -34,11 +36,21 @@ const props = defineProps({
 })
 
 const contentHtml = ref('')
+const imageUrl = ref('')
 
 const contentElm = ref(null)
 
 watchEffect(async () => {
   contentHtml.value = props.message.message ? md.render(props.message.message) : ''
+
+  if (props.message.image_hash) {
+    imageUrl.value = imageStorage.value[props.message.image_hash] || ''
+  } else if (props.message.image) {
+    imageUrl.value = props.message.image
+  } else {
+    imageUrl.value = ''
+  }
+  
   await nextTick()
   bindCopyCodeToButtons()
 })
@@ -72,15 +84,26 @@ onMounted(() => {
 
 <template>
   <v-card
-      :color="message.is_bot ? '' : 'primary'"
-      rounded="lg"
-      elevation="2"
-      :class="{card_disabled: message.is_disabled}"
+    :color="message.is_bot ? '' : 'primary'"
+    rounded="lg"
+    elevation="2"
+    :class="{card_disabled: message.is_disabled}"
   >
+    <!-- 修改图片显示样式 -->
+    <div v-if="imageUrl" class="image-container">
+      <v-img
+        :src="imageUrl"
+        height="300"
+        width="400"
+        cover
+        class="rounded-lg"
+      ></v-img>
+    </div>
+    
     <div
-        ref="contentElm"
-        v-html="contentHtml"
-        class="chat-msg-content pa-3"
+      ref="contentElm"
+      v-html="contentHtml"
+      class="chat-msg-content pa-3"
     ></div>
     <v-divider :color='message.is_bot? "rgb(var(--v-theme-on-background))" : "rgb(var(--v-theme-on-primary))"'></v-divider>
   </v-card>
@@ -140,5 +163,13 @@ onMounted(() => {
 }
 .card_disabled {
   opacity: 0.5;
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin: 1rem;
+  border-radius: 8px;
 }
 </style>
