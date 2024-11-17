@@ -40,15 +40,19 @@ const editMessage = () => {
   props.usePrompt(props.message.message)
 }
 
+const emit = defineEmits(['messageDeleted', 'messageToggled'])
+
 const deleteMessage = async () => {
   const { data, error } = await useAuthFetch(`/api/chat/messages/${props.message.id}/`, {
     method: 'DELETE'
   })
   if (!error.value) {
     props.deleteMessage(props.messageIndex)
+    emit('messageDeleted')
     showSnackbar('Deleted!')
+  } else {
+    showSnackbar('Delete failed')
   }
-  showSnackbar('Delete failed')
 }
 
 const toggle_message = async() => {
@@ -60,6 +64,7 @@ const toggle_message = async() => {
   })
   if (!error.value) {
     props.toggleMessage(props.messageIndex)
+    emit('messageToggled')
   }
 }
 

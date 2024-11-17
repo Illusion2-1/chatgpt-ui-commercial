@@ -198,6 +198,7 @@ const send = (message) => {
     props.conversation.messages.push(...message.map(i => ({
       message: i.content, 
       message_type: i.message_type,
+      image: i.image,
       is_bot: i.is_bot || false
     })))
     
@@ -209,6 +210,7 @@ const send = (message) => {
     props.conversation.messages.push({ 
       message: message.content, 
       message_type: message.message_type,
+      image: message.image,
       is_bot: message.is_bot || false 
     })
   }
@@ -218,6 +220,7 @@ const send = (message) => {
 }
 const stop = () => {
   abortFetch()
+  thinkingPlaceholder.value = false
 }
 
 const snackbar = ref(false)
@@ -242,6 +245,13 @@ const toggleMessage = (index) => {
 
 const enableWebSearch = ref(false)
 
+const onMessageDeleted = () => {
+  thinkingPlaceholder.value = false
+}
+
+const onMessageToggled = () => {
+  thinkingPlaceholder.value = false
+}
 
 onMounted(async () => {
   await fetchModels()
@@ -281,8 +291,9 @@ const { t } = useI18n()
                     :message="message"
                     :message-index="index"
                     :use-prompt="usePrompt"
-                    :delete-message="deleteMessage"
-                    :toggle-message="toggleMessage"
+
+                    @message-deleted="onMessageDeleted"
+                    @message-toggled="onMessageToggled"
                 />
                 <MsgContent
                   :message="message"

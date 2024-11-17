@@ -36,18 +36,52 @@ watchEffect(() => {
   }
 })
 
+const imageFile = ref(null)
+const imageBase64 = ref('')
+const { currentModel } = useCurrentModel()
+
+const showImageUpload = computed(() => {
+  return currentModel.value?.image_support
+})
+
+const handleImageSelect = async (event) => {
+  const file = event.target.files[0]
+  if (file) {
+    imageFile.value = file
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      imageBase64.value = e.target.result
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+const clearImage = () => {
+  imageFile.value = null
+  imageBase64.value = ''
+}
+
 const send = () => {
   let msg = message.value
-  // remove the last "\n"
   if (msg[msg.length - 1] === "\n") {
     msg = msg.slice(0, -1)
   }
   if (msg.length > 0) {
-    let item = toolSelector.value.list[toolSelector.value.selected]
     try {
-      props.sendMessage({content: msg, tool: item.name, message_type: item.type})
+      const messageData = {
+        content: msg,
+        tool: 'chat',
+        message_type: 0
+      }
+      
+      if (imageBase64.value) {
+        messageData.image = imageBase64.value
+        messageData.message_type = 120
+      }
+      
+      props.sendMessage(messageData)
       message.value = ""
-      toolSelector.value.selected = 0
+      clearImage()
     } catch (error) {
       if (error.message === 'Rate limit exceeded') {
         showSnackbar($t('rateLimitExceeded'))
@@ -109,34 +143,9 @@ const docDialogCtl = ref({
 </script>
 
 <template>
-  <div
-      class="flex-grow-1 d-flex align-center justify-space-between"
-  >
-    <v-btn
-      title="Tools"
-      :icon="getToolIcon()"
-      density="compact"
-      size="default"
-      class="mr-3"
-      id="tools_btn"
-    >
-    </v-btn>
-    <v-menu
-      activator="#tools_btn"
-      open-on-hover
-    >
-      <v-list density="compact">
-        <v-list-item
-          v-for="(item, index) in toolSelector.list"
-          :key="index"
-          :prepend-icon="item.icon"
-          @click="selectTool(index)"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-    <v-textarea
+  <div class="flex-grow-1 d-flex flex-column">
+    <div class="d-flex align-center justify-space-between">
+      <v-textarea
         ref="textArea"
         v-model="message"
         :label="$t(getLabel())"
@@ -151,13 +160,40 @@ const docDialogCtl = ref({
         variant="outlined"
         class="userinputmsg"
         @keypress.enter.exact="enterOnly"
-    ></v-textarea>
-    <v-btn
+      ></v-textarea>
+      <v-btn
         :disabled="loading"
         icon="send"
         title="Send"
         class="ml-3"
         @click="clickSendBtn"
-    ></v-btn>
+      ></v-btn>
+    </div>
+    
+    <div v-if="showImageUpload" class="d-flex align-center mt-2">
+      <input
+        type="file"
+        accept="image/*"
+        ref="imageInput"
+        style="display: none"
+        @change="handleImageSelect"
+      >
+      <v-btn
+        v-if="!imageBase64"
+        size="small"
+        prepend-icon="image"
+        @click="$refs.imageInput.click()"
+      >
+        {{ $t('selectImage') }}
+      </v-btn>
+      <div v-else class="d-flex align-center">
+        <v-chip
+          closable
+          @click:close="clearImage"
+        >
+          {{ imageFile.name }}
+        </v-chip>
+      </div>
+    </div>
   </div>
 </template>
